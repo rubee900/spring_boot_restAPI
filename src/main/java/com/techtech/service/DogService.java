@@ -2,6 +2,7 @@ package com.techtech.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.techtech.dto.DogDTO;
 import com.techtech.enitity.DogEntity;
+import com.techtech.exception.DogNotFoundException;
 import com.techtech.repo.DogRepository;
 
 @Service
@@ -40,6 +42,19 @@ public class DogService {
 	
 	public void deleteDog(int did) {
 		dogRepository.deleteById(did);
+	}
+	
+	public DogDTO findById(int did) {
+		Optional<DogEntity> optional= dogRepository.findById(did);
+		DogDTO dogDTO= new DogDTO();
+		if(optional.isPresent()) {
+			BeanUtils.copyProperties(optional.get(), dogDTO);
+			
+			
+	}else {
+		throw new DogNotFoundException("hey! dog does not exist.");
+	}
+		return dogDTO;
 	}
 
 }

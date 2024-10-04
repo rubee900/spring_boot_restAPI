@@ -40,9 +40,10 @@ public class DogRestController {
 	}
 
 	@GetMapping("/dogs/{did}")
-	public DogDTO showDog(@PathVariable int did) {
-		return new DogDTO(did, "Cherry", "red");
-	}
+	public ResponseEntity<DogDTO> showDog(@PathVariable int did) {
+		DogDTO dogDTO = dogService.findById(did);
+		return new ResponseEntity<DogDTO>(dogDTO,HttpStatus.OK);
+		}
 
 	@PostMapping("/dogs")
 	public ResponseEntity<DogDTO> createDog(@RequestBody DogDTO dogDTO) {
@@ -52,9 +53,9 @@ public class DogRestController {
 	}
 
 	@DeleteMapping("/dogs/{did}")
-	public ResponseEntity<Void> deleteDog(@PathVariable int did) {
+	public ResponseEntity<DogDTO> deleteDog(@PathVariable int did) {
 		dogService.deleteDog(did);
-		return new ResponseEntity<Void>(HttpStatus.OK);
+		return new ResponseEntity<DogDTO>(HttpStatus.OK);
 	}
 	/*
 	 * @PostMapping("/dogs") public DogDTO createDog(@RequestBody DogDTO dogDTO) {
